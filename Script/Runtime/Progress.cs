@@ -12,23 +12,17 @@ namespace qbot.UI
         [SerializeField] private GameObject progressObject;
         public GameObject ProgressObject
         {
-            private get
-            {
-                return progressObject;
-            }
-            set
-            {
-                progressObject = value;
-            }
+            private get => progressObject;
+            set => progressObject = value;
         }
 
-        private Dictionary<string, int> _progressKeyDictionary;
+        private Dictionary<string, int> progressKeyDictionary;
         private Dictionary<string, int> ProgressKeyDictionary
         {
             get
             {
-                this._progressKeyDictionary ??= new Dictionary<string, int>();
-                return this._progressKeyDictionary;
+                progressKeyDictionary ??= new Dictionary<string, int>();
+                return progressKeyDictionary;
             }
         }
         #endregion
@@ -36,7 +30,7 @@ namespace qbot.UI
         #region Public functions
         /// <summary>
         /// Open the progress object.
-        /// The progresskey must be the same key value when closing the progress object.
+        /// The progressKey must be the same key value when closing the progress object.
         /// </summary>
         /// <param name="progressKey">
         /// The key value that activated the progress object.
@@ -44,16 +38,18 @@ namespace qbot.UI
         /// </param>
         public void Open(string progressKey)
         {
-            if (this.progressObject == null)
+            IncreaseProgressKey(progressKey);
+            
+            if (progressObject == null)
             {
                 Debug.Log("progressObject is null.");
                 return;
             }
 
-            if (this.progressObject.activeSelf)
+            if (progressObject.activeSelf)
                 return;
 
-            this.progressObject.SetActive(true);
+            progressObject.SetActive(true);
         }
 
         /// <summary>
@@ -66,53 +62,53 @@ namespace qbot.UI
         /// </param>
         public void Close(string progressKey)
         {
-            if (this.progressObject == null)
+            if (progressObject == null)
             {
                 Debug.Log("progressObject is null.");
                 return;
             }
 
-            if (this.ProgressKeyDictionary.ContainsKey(progressKey) == false)
+            if (ProgressKeyDictionary.ContainsKey(progressKey) == false)
                 return;
 
             DecreaseProgressKey(progressKey);
 
-            if (this.ProgressKeyDictionary.Count == 0)
+            if (ProgressKeyDictionary.Count == 0)
             {
-                this.progressObject.SetActive(false);
+                progressObject.SetActive(false);
             }
         }
         #endregion
 
         #region Private functions
-        private readonly object lock_object_increaseProgressKey = new();
+        private readonly object lockObjectIncreaseProgressKey = new();
         private void IncreaseProgressKey(string progressKey)
         {
-            lock (lock_object_increaseProgressKey)
+            lock (lockObjectIncreaseProgressKey)
             {
-                if (this.ProgressKeyDictionary.ContainsKey(progressKey) == false)
+                if (ProgressKeyDictionary.ContainsKey(progressKey) == false)
                 {
-                    this.ProgressKeyDictionary.Add(progressKey, 1);
+                    ProgressKeyDictionary.Add(progressKey, 1);
                 }
                 else
                 {
-                    this.ProgressKeyDictionary[progressKey] = this.ProgressKeyDictionary[progressKey] + 1;
+                    ProgressKeyDictionary[progressKey] += 1;
                 }
             }
         }
 
-        private readonly object lock_object_decreaseProgressKey = new();
+        private readonly object lockObjectDecreaseProgressKey = new();
         private void DecreaseProgressKey(string progressKey)
         {
-            lock (lock_object_decreaseProgressKey)
+            lock (lockObjectDecreaseProgressKey)
             {
-                if (this.ProgressKeyDictionary[progressKey] <= 1)
+                if (ProgressKeyDictionary[progressKey] <= 1)
                 {
-                    this.ProgressKeyDictionary.Remove(progressKey);
+                    ProgressKeyDictionary.Remove(progressKey);
                 }
                 else
                 {
-                    this.ProgressKeyDictionary[progressKey] = this.ProgressKeyDictionary[progressKey] - 1;
+                    ProgressKeyDictionary[progressKey] -= 1;
                 }
             }
         }

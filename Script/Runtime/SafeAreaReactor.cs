@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace qbot.UI
@@ -25,29 +23,29 @@ namespace qbot.UI
         #region Private functions
         private void PrepareBaseObjects()
         {
-            if (this.rectTransform == null)
+            if (rectTransform == null)
             {
-                this.rectTransform = this.gameObject.GetComponent<RectTransform>();
+                rectTransform = gameObject.GetComponent<RectTransform>();
             }
         }
 
         private void ApplySafeAreaPosition()
         {
-            if (this.rectTransform == null)
+            if (rectTransform == null)
                 return;
 
             var safeArea = Screen.safeArea;
             var anchorMin = safeArea.position;
             var anchorMax = safeArea.position + safeArea.size;
 
-            anchorMin.x = this.rectTransform.anchorMin.x;
-            anchorMax.x = this.rectTransform.anchorMax.x;
+            anchorMin.x = rectTransform.anchorMin.x;
+            anchorMax.x = rectTransform.anchorMax.x;
 
             anchorMin.y /= Screen.height;
             anchorMax.y /= Screen.height;
 
-            this.rectTransform.anchorMin = anchorMin;
-            this.rectTransform.anchorMax = anchorMax;
+            rectTransform.anchorMin = anchorMin;
+            rectTransform.anchorMax = anchorMax;
         }
         #endregion
     }

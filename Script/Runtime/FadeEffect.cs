@@ -14,14 +14,8 @@ namespace qbot.UI
         [SerializeField] private Color beginFadeColor = Color.black;
         public Color BeginFadeColor
         {
-            private get
-            {
-                return beginFadeColor;
-            }
-            set
-            {
-                beginFadeColor = value;
-            }
+            private get => beginFadeColor;
+            set => beginFadeColor = value;
         }
 
         /// <summary>
@@ -30,14 +24,8 @@ namespace qbot.UI
         [SerializeField] private float beginWaitTerm = 0.5f;
         public float BeginWaitTerm
         {
-            private get
-            {
-                return beginWaitTerm;
-            }
-            set
-            {
-                beginWaitTerm = value;
-            }
+            private get => beginWaitTerm;
+            set => beginWaitTerm = value;
         }
 
         /// <summary>
@@ -46,14 +34,8 @@ namespace qbot.UI
         [SerializeField] private float fadeDelayTerm = 0.2f;
         public float FadeDelayTerm
         {
-            private get
-            {
-                return fadeDelayTerm;
-            }
-            set
-            {
-                fadeDelayTerm = value;
-            }
+            private get => fadeDelayTerm;
+            set => fadeDelayTerm = value;
         }
 
         /// <summary>
@@ -62,14 +44,8 @@ namespace qbot.UI
         [SerializeField] private float fadeAlphaWeight = 0.2f;
         public float FadeAlphaWeight
         {
-            private get
-            {
-                return fadeAlphaWeight;
-            }
-            set
-            {
-                fadeAlphaWeight = value;
-            }
+            private get => fadeAlphaWeight;
+            set => fadeAlphaWeight = value;
         }
 
         /// <summary>
@@ -78,14 +54,8 @@ namespace qbot.UI
         [SerializeField] private Image fadeEffectImage;
         public Image FadeEffectImage
         {
-            private get
-            {
-                return fadeEffectImage;
-            }
-            set
-            {
-                fadeEffectImage = value;
-            }
+            private get => fadeEffectImage;
+            set => fadeEffectImage = value;
         }
         #endregion
 
@@ -97,19 +67,19 @@ namespace qbot.UI
         /// <param name="callback">callback function to be called after the fade effect ends</param>
         public void StartFadeEffect(bool isFadeIn, Action callback = null)
         {
-            if (this.fadeEffectImage == null)
+            if (fadeEffectImage == null)
             {
                 Debug.Log("fadeEffectImage is null.");
                 return;
             }
                 
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
 
-            this.fadeEffectImage.gameObject.SetActive(true);
-            this.fadeEffectImage.enabled = true;
+            fadeEffectImage.gameObject.SetActive(true);
+            fadeEffectImage.enabled = true;
 
-            this.beginFadeColor.a = isFadeIn == true ? 1.0f : 0.0f;
-            this.fadeEffectImage.color = this.beginFadeColor;
+            beginFadeColor.a = isFadeIn ? 1.0f : 0.0f;
+            fadeEffectImage.color = beginFadeColor;
 
             StartCoroutine(StartFadeEffectAsync(isFadeIn, callback));
         }
@@ -119,49 +89,42 @@ namespace qbot.UI
         /// </summary>
         public void DisableFadeEffectObject()
         {
-            if (this.fadeEffectImage == null)
+            if (fadeEffectImage == null)
             {
                 Debug.Log("fadeEffectImage is null.");
                 return;
             }
 
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
 
-            this.fadeEffectImage.enabled = false;
-            this.fadeEffectImage.gameObject.SetActive(false);
+            fadeEffectImage.enabled = false;
+            fadeEffectImage.gameObject.SetActive(false);
         }
         #endregion
 
         #region Private functions
         private IEnumerator StartFadeEffectAsync(bool isFadeIn, Action callback)
         {
-            yield return new WaitForSeconds(this.beginWaitTerm);
+            yield return new WaitForSeconds(beginWaitTerm);
 
-            var fadeColor = this.fadeEffectImage.color;
-            var fadeAlpha = this.beginFadeColor.a;
+            var fadeColor = fadeEffectImage.color;
+            var fadeAlpha = beginFadeColor.a;
             var fadeInOutAlphaWeight = isFadeIn == true ? -1.0f : 1.0f;
-            var fadeDelayTermWFS = new WaitForSeconds(this.fadeDelayTerm);
+            var fadeDelayTermWfs = new WaitForSeconds(fadeDelayTerm);
 
             while (fadeAlpha >= 0.0f && fadeAlpha <= 1.0f)
             {
                 fadeColor.a = fadeAlpha;
-                this.fadeEffectImage.color = fadeColor;
+                fadeEffectImage.color = fadeColor;
 
-                fadeAlpha += this.fadeAlphaWeight * fadeInOutAlphaWeight;
+                fadeAlpha += fadeAlphaWeight * fadeInOutAlphaWeight;
 
-                yield return fadeDelayTermWFS;
+                yield return fadeDelayTermWfs;
             }
 
-            if (fadeInOutAlphaWeight > 0)
-            {
-                fadeColor.a = 1.0f;
-            }
-            else
-            {
-                fadeColor.a = 0.0f;
-            }
+            fadeColor.a = fadeInOutAlphaWeight > 0 ? 1.0f : 0.0f;
 
-            this.fadeEffectImage.color = fadeColor;
+            fadeEffectImage.color = fadeColor;
 
             callback?.Invoke();
         }
