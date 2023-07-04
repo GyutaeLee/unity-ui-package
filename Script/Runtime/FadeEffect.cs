@@ -73,10 +73,7 @@ namespace qbot.UI
                 return;
             }
                 
-            gameObject.SetActive(true);
-
-            fadeEffectImage.gameObject.SetActive(true);
-            fadeEffectImage.enabled = true;
+            EnableFadeEffectObjects(true);
 
             beginFadeColor.a = isFadeIn ? 1.0f : 0.0f;
             fadeEffectImage.color = beginFadeColor;
@@ -95,10 +92,7 @@ namespace qbot.UI
                 return;
             }
 
-            gameObject.SetActive(false);
-
-            fadeEffectImage.enabled = false;
-            fadeEffectImage.gameObject.SetActive(false);
+            EnableFadeEffectObjects(false);
         }
         #endregion
 
@@ -109,7 +103,7 @@ namespace qbot.UI
 
             var fadeColor = fadeEffectImage.color;
             var fadeAlpha = beginFadeColor.a;
-            var fadeInOutAlphaWeight = isFadeIn == true ? -1.0f : 1.0f;
+            var fadeInOutAlphaWeight = isFadeIn ? -1.0f : 1.0f;
             var fadeDelayTermWfs = new WaitForSeconds(fadeDelayTerm);
 
             while (fadeAlpha >= 0.0f && fadeAlpha <= 1.0f)
@@ -123,10 +117,17 @@ namespace qbot.UI
             }
 
             fadeColor.a = fadeInOutAlphaWeight > 0 ? 1.0f : 0.0f;
-
             fadeEffectImage.color = fadeColor;
 
             callback?.Invoke();
+        }
+
+        private void EnableFadeEffectObjects(bool enable)
+        {
+            gameObject.SetActive(enable);
+
+            fadeEffectImage.gameObject.SetActive(enable);
+            fadeEffectImage.enabled = enable;
         }
         #endregion
     }
