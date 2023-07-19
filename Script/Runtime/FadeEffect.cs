@@ -7,59 +7,117 @@ namespace qbot.UI
 {
     public class FadeEffect : MonoBehaviour
     {
-        #region Properties
+#region Fields
+
+        /// <summary>
+        /// Decide whether to use the class as a singleton pattern.
+        /// </summary>
+        [Header("[Singleton]")]
+        [SerializeField]
+        private bool isSingleton;
+
+        /// <summary>
+        /// Deciding whether to make the class a DontDestroyOnLoad GameObject.
+        /// </summary>
+        [SerializeField]
+        private bool isDontDestroyOnLoad;
+
         /// <summary>
         /// Fade effect start color.
         /// </summary>
-        [SerializeField] private Color beginFadeColor = Color.black;
+        [Space(5)]
+        [Header("[Effect value]")]
+        [SerializeField]
+        private Color beginFadeColor = Color.black;
+
+        /// <summary>
+        /// Fade effect Startup wait term.
+        /// </summary>
+        [SerializeField]
+        private float beginWaitTerm = 0.5f;
+
+        /// <summary>
+        /// Fade effect's alpha-weighted delay term.
+        /// </summary>
+        [SerializeField]
+        private float fadeDelayTerm = 0.2f;
+
+        /// <summary>
+        /// The alpha weight added to each delay term of the fade effect.
+        /// </summary>
+        [SerializeField]
+        private float fadeAlphaWeight = 0.2f;
+
+        /// <summary>
+        /// The image to which the fade effect will be applied.
+        /// </summary>
+        [SerializeField]
+        private Image fadeEffectImage;
+
+#endregion
+
+#region Properties
+
+        public static FadeEffect Instance { get; private set; }
+
         public Color BeginFadeColor
         {
             private get => beginFadeColor;
             set => beginFadeColor = value;
         }
 
-        /// <summary>
-        /// Fade effect Startup wait term.
-        /// </summary>
-        [SerializeField] private float beginWaitTerm = 0.5f;
         public float BeginWaitTerm
         {
             private get => beginWaitTerm;
             set => beginWaitTerm = value;
         }
 
-        /// <summary>
-        /// Fade effect's alpha-weighted delay term.
-        /// </summary>
-        [SerializeField] private float fadeDelayTerm = 0.2f;
         public float FadeDelayTerm
         {
             private get => fadeDelayTerm;
             set => fadeDelayTerm = value;
         }
 
-        /// <summary>
-        /// The alpha weight added to each delay term of the fade effect.
-        /// </summary>
-        [SerializeField] private float fadeAlphaWeight = 0.2f;
         public float FadeAlphaWeight
         {
             private get => fadeAlphaWeight;
             set => fadeAlphaWeight = value;
         }
 
-        /// <summary>
-        /// The image to which the fade effect will be applied.
-        /// </summary>
-        [SerializeField] private Image fadeEffectImage;
         public Image FadeEffectImage
         {
             private get => fadeEffectImage;
             set => fadeEffectImage = value;
         }
-        #endregion
 
-        #region Public functions
+#endregion
+
+#region Monobehaviour functions
+
+        private void Awake()
+        {
+            if (isSingleton)
+            {
+                if (Instance == null)
+                {
+                    if (isDontDestroyOnLoad)
+                    {
+                        DontDestroyOnLoad(gameObject);
+                    }
+
+                    Instance = this;
+                }
+                else
+                {
+                    Destroy(this);
+                }
+            }
+        }
+
+#endregion
+
+#region Public functions
+
         /// <summary>
         /// Starts the fade in or out effect.
         /// </summary>
@@ -72,7 +130,7 @@ namespace qbot.UI
                 Debug.Log("fadeEffectImage is null.");
                 return;
             }
-                
+
             EnableFadeEffectObjects(true);
 
             beginFadeColor.a = isFadeIn ? 1.0f : 0.0f;
@@ -94,9 +152,11 @@ namespace qbot.UI
 
             EnableFadeEffectObjects(false);
         }
-        #endregion
 
-        #region Private functions
+#endregion
+
+#region Private functions
+
         private IEnumerator StartFadeEffectAsync(bool isFadeIn, Action callback)
         {
             yield return new WaitForSeconds(beginWaitTerm);
@@ -129,7 +189,7 @@ namespace qbot.UI
             fadeEffectImage.gameObject.SetActive(enable);
             fadeEffectImage.enabled = enable;
         }
-        #endregion
-    }
 
+#endregion
+    }
 }
