@@ -8,19 +8,24 @@ namespace qbot.UI
     /// </summary>
     public class SafeAreaReactor : MonoBehaviour
     {
-        #region Fields
-        [SerializeField] private RectTransform rectTransform;
-        #endregion
+#region Fields
 
-        #region Monobehaviour functions
+        [SerializeField] private RectTransform rectTransform;
+
+#endregion
+
+#region Monobehaviour functions
+
         private void Start()
         {
             PrepareBaseObjects();
             ApplySafeAreaPosition();
         }
-        #endregion
 
-        #region Private functions
+#endregion
+
+#region Private functions
+
         private void PrepareBaseObjects()
         {
             if (rectTransform == null)
@@ -47,6 +52,7 @@ namespace qbot.UI
             rectTransform.anchorMin = anchorMin;
             rectTransform.anchorMax = anchorMax;
         }
-        #endregion
+
+#endregion
     }
 }
