@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace qbot.UI
 {
@@ -114,6 +115,11 @@ namespace qbot.UI
             }
         }
 
+        private void Start()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
 #endregion
 
 #region Public functions
@@ -136,7 +142,7 @@ namespace qbot.UI
             beginFadeColor.a = isFadeIn ? 1.0f : 0.0f;
             fadeEffectImage.color = beginFadeColor;
 
-            StartCoroutine(StartFadeEffectAsync(isFadeIn, callback));
+            StartCoroutine(CoroutineFadeEffect(isFadeIn, callback));
         }
 
         /// <summary>
@@ -157,7 +163,12 @@ namespace qbot.UI
 
 #region Private functions
 
-        private IEnumerator StartFadeEffectAsync(bool isFadeIn, Action callback)
+        private void OnSceneUnloaded(Scene scene)
+        {
+            DisableFadeEffectObject();
+        }
+
+        private IEnumerator CoroutineFadeEffect(bool isFadeIn, Action callback)
         {
             yield return new WaitForSeconds(beginWaitTerm);
 
