@@ -58,7 +58,7 @@ namespace qbot.UI
         /// <param name="popUpDescription">Text for the popup</param>
         /// <param name="buttonDescription">Text for the button</param>
         /// <param name="buttonUnityAction">The action that will be called when the button is pressed</param>
-        public void OpenDefaultPopup(string popUpDescription, string buttonDescription, UnityAction buttonUnityAction = null)
+        public void OpenDefaultPopup(string popUpDescription, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
         {
             if (popupObject == null || popupButton == null || PopupDescriptionText == null)
             {
