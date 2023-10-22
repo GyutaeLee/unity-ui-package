@@ -5,11 +5,13 @@ namespace qbot.UI
 {
     public class Progress : MonoBehaviour
     {
-        #region Properties
+#region Properties
+
         /// <summary>
         /// Objects that will appear when an action is in progress.
         /// </summary>
-        [SerializeField] private GameObject progressObject;
+        [SerializeField]
+        private GameObject progressObject;
         public GameObject ProgressObject
         {
             private get => progressObject;
@@ -25,9 +27,18 @@ namespace qbot.UI
                 return progressKeyDictionary;
             }
         }
-        #endregion
 
-        #region Public functions
+#endregion
+
+#region Fields
+
+        private readonly object lockObjectIncreaseProgressKey = new();
+        private readonly object lockObjectDecreaseProgressKey = new();
+
+#endregion
+
+#region Public functions
+
         /// <summary>
         /// Open the progress object.
         /// The progressKey must be the same key value when closing the progress object.
@@ -39,7 +50,7 @@ namespace qbot.UI
         public void Open(string progressKey)
         {
             IncreaseProgressKey(progressKey);
-            
+
             if (progressObject == null)
             {
                 Debug.Log("progressObject is null.");
@@ -78,10 +89,11 @@ namespace qbot.UI
                 progressObject.SetActive(false);
             }
         }
-        #endregion
 
-        #region Private functions
-        private readonly object lockObjectIncreaseProgressKey = new();
+#endregion
+
+#region Private functions
+
         private void IncreaseProgressKey(string progressKey)
         {
             lock (lockObjectIncreaseProgressKey)
@@ -97,7 +109,6 @@ namespace qbot.UI
             }
         }
 
-        private readonly object lockObjectDecreaseProgressKey = new();
         private void DecreaseProgressKey(string progressKey)
         {
             lock (lockObjectDecreaseProgressKey)
@@ -112,6 +123,7 @@ namespace qbot.UI
                 }
             }
         }
-        #endregion
+
+#endregion
     }
 }
