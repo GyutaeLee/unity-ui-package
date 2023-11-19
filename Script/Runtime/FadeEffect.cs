@@ -177,7 +177,7 @@ namespace qbot.UI
             var fadeInOutAlphaWeight = isFadeIn ? -1.0f : 1.0f;
             var fadeDelayTermWfs = new WaitForSeconds(fadeDelayTerm);
 
-            while (fadeAlpha >= 0.0f && fadeAlpha <= 1.0f)
+            while (fadeAlpha is >= 0.0f and <= 1.0f)
             {
                 fadeColor.a = fadeAlpha;
                 fadeEffectImage.color = fadeColor;

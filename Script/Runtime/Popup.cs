@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
@@ -9,11 +7,13 @@ namespace qbot.UI
 {
     public class Popup : MonoBehaviour
     {
-        #region Properties
+#region Properties
+
         /// <summary>
         /// Popup object.
         /// </summary>
-        [SerializeField] private GameObject popupObject;
+        [SerializeField]
+        private GameObject popupObject;
         public GameObject PopupObject
         {
             private get => popupObject;
@@ -23,7 +23,8 @@ namespace qbot.UI
         /// <summary>
         /// Popup button.
         /// </summary>
-        [SerializeField] private Button popupButton;
+        [SerializeField]
+        private Button popupButton;
         public Button PopupButton
         {
             private get => popupButton;
@@ -33,7 +34,8 @@ namespace qbot.UI
         /// <summary>
         /// Popup main description.
         /// </summary>
-        [SerializeField] private TextMeshProUGUI popupDescriptionText;
+        [SerializeField]
+        private TextMeshProUGUI popupDescriptionText;
         public TextMeshProUGUI PopupDescriptionText
         {
             private get => popupDescriptionText;
@@ -43,15 +45,20 @@ namespace qbot.UI
         /// <summary>
         /// Button main description.
         /// </summary>
-        [SerializeField] private TextMeshProUGUI buttonDescriptionText;
+        [SerializeField]
+        private TextMeshProUGUI buttonDescriptionText;
         public TextMeshProUGUI ButtonDescriptionText
         {
             private get => buttonDescriptionText;
-            set => popupDescriptionText = value;
+            set => buttonDescriptionText = value;
         }
-        #endregion
 
-        #region Public functions
+        private bool AllPopupClosed => popupObject.activeSelf == false;
+
+#endregion
+
+#region Public functions
+
         /// <summary>
         /// Opens the one button popup.
         /// </summary>
@@ -93,6 +100,7 @@ namespace qbot.UI
             popupObject.SetActive(false);
             popupButton.onClick.RemoveAllListeners();
         }
-        #endregion
+
+#endregion
     }
 }
