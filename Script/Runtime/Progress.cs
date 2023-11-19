@@ -49,13 +49,13 @@ namespace qbot.UI
         /// </param>
         public void Open(string progressKey)
         {
-            IncreaseProgressKey(progressKey);
-
             if (progressObject == null)
             {
                 Debug.Log("progressObject is null.");
                 return;
             }
+
+            IncreaseProgressKey(progressKey);
 
             if (progressObject.activeSelf)
                 return;
