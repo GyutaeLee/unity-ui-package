@@ -2,18 +2,14 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Serialization;
 
 namespace qbot.UI
 {
     public class Popup : MonoBehaviour
     {
-#region Properties
-
         /// <summary>
         /// Popup object.
         /// </summary>
-        [FormerlySerializedAs("popupObject")]
         [SerializeField]
         private GameObject _popupObject;
         public GameObject PopupObject
@@ -25,7 +21,6 @@ namespace qbot.UI
         /// <summary>
         /// Popup button.
         /// </summary>
-        [FormerlySerializedAs("popupButton")]
         [SerializeField]
         private Button _popupButton;
         public Button PopupButton
@@ -37,7 +32,6 @@ namespace qbot.UI
         /// <summary>
         /// Popup main description.
         /// </summary>
-        [FormerlySerializedAs("popupDescriptionText")]
         [SerializeField]
         private TextMeshProUGUI _popupDescriptionText;
         public TextMeshProUGUI PopupDescriptionText
@@ -49,7 +43,6 @@ namespace qbot.UI
         /// <summary>
         /// Button main description.
         /// </summary>
-        [FormerlySerializedAs("buttonDescriptionText")]
         [SerializeField]
         private TextMeshProUGUI _buttonDescriptionText;
         public TextMeshProUGUI ButtonDescriptionText
@@ -59,10 +52,6 @@ namespace qbot.UI
         }
 
         private bool AllPopupClosed => _popupObject.activeSelf == false;
-
-#endregion
-
-#region Public functions
 
         /// <summary>
         /// Opens the one button popup.
@@ -105,7 +94,5 @@ namespace qbot.UI
             _popupObject.SetActive(false);
             _popupButton.onClick.RemoveAllListeners();
         }
-
-#endregion
     }
 }

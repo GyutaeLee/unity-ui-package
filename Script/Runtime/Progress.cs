@@ -1,17 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace qbot.UI
 {
     public class Progress : MonoBehaviour
     {
-#region Properties
-
         /// <summary>
         /// Objects that will appear when an action is in progress.
         /// </summary>
-        [FormerlySerializedAs("progressObject")]
         [SerializeField]
         private GameObject _progressObject;
         public GameObject ProgressObject
@@ -30,16 +26,8 @@ namespace qbot.UI
             }
         }
 
-#endregion
-
-#region Fields
-
         private readonly object _lockObjectIncreaseProgressKey = new();
         private readonly object _lockObjectDecreaseProgressKey = new();
-
-#endregion
-
-#region Public functions
 
         /// <summary>
         /// Open the progress object.
@@ -92,10 +80,6 @@ namespace qbot.UI
             }
         }
 
-#endregion
-
-#region Private functions
-
         private void IncreaseProgressKey(string progressKey)
         {
             lock (_lockObjectIncreaseProgressKey)
@@ -121,7 +105,5 @@ namespace qbot.UI
                 }
             }
         }
-
-#endregion
     }
 }
