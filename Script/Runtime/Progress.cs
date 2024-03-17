@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace qbot.UI
 {
@@ -10,21 +11,22 @@ namespace qbot.UI
         /// <summary>
         /// Objects that will appear when an action is in progress.
         /// </summary>
+        [FormerlySerializedAs("progressObject")]
         [SerializeField]
-        private GameObject progressObject;
+        private GameObject _progressObject;
         public GameObject ProgressObject
         {
-            private get => progressObject;
-            set => progressObject = value;
+            private get => _progressObject;
+            set => _progressObject = value;
         }
 
-        private Dictionary<string, int> progressKeyDictionary;
+        private Dictionary<string, int> _progressKeyDictionary;
         private Dictionary<string, int> ProgressKeyDictionary
         {
             get
             {
-                progressKeyDictionary ??= new Dictionary<string, int>();
-                return progressKeyDictionary;
+                _progressKeyDictionary ??= new Dictionary<string, int>();
+                return _progressKeyDictionary;
             }
         }
 
@@ -32,8 +34,8 @@ namespace qbot.UI
 
 #region Fields
 
-        private readonly object lockObjectIncreaseProgressKey = new();
-        private readonly object lockObjectDecreaseProgressKey = new();
+        private readonly object _lockObjectIncreaseProgressKey = new();
+        private readonly object _lockObjectDecreaseProgressKey = new();
 
 #endregion
 
@@ -49,7 +51,7 @@ namespace qbot.UI
         /// </param>
         public void Open(string progressKey)
         {
-            if (progressObject == null)
+            if (_progressObject == null)
             {
                 Debug.Log("progressObject is null.");
                 return;
@@ -57,10 +59,10 @@ namespace qbot.UI
 
             IncreaseProgressKey(progressKey);
 
-            if (progressObject.activeSelf)
+            if (_progressObject.activeSelf)
                 return;
 
-            progressObject.SetActive(true);
+            _progressObject.SetActive(true);
         }
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace qbot.UI
         /// </param>
         public void Close(string progressKey)
         {
-            if (progressObject == null)
+            if (_progressObject == null)
             {
                 Debug.Log("progressObject is null.");
                 return;
@@ -86,7 +88,7 @@ namespace qbot.UI
 
             if (ProgressKeyDictionary.Count == 0)
             {
-                progressObject.SetActive(false);
+                _progressObject.SetActive(false);
             }
         }
 
@@ -96,13 +98,9 @@ namespace qbot.UI
 
         private void IncreaseProgressKey(string progressKey)
         {
-            lock (lockObjectIncreaseProgressKey)
+            lock (_lockObjectIncreaseProgressKey)
             {
-                if (ProgressKeyDictionary.ContainsKey(progressKey) == false)
-                {
-                    ProgressKeyDictionary.Add(progressKey, 1);
-                }
-                else
+                if (ProgressKeyDictionary.TryAdd(progressKey, 1) == false)
                 {
                     ProgressKeyDictionary[progressKey] += 1;
                 }
@@ -111,7 +109,7 @@ namespace qbot.UI
 
         private void DecreaseProgressKey(string progressKey)
         {
-            lock (lockObjectDecreaseProgressKey)
+            lock (_lockObjectDecreaseProgressKey)
             {
                 if (ProgressKeyDictionary[progressKey] <= 1)
                 {

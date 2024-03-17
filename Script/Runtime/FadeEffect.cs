@@ -8,20 +8,18 @@ namespace qbot.UI
 {
     public class FadeEffect : MonoBehaviour
     {
-#region Fields
-
         /// <summary>
         /// Decide whether to use the class as a singleton pattern.
         /// </summary>
         [Header("[Singleton]")]
         [SerializeField]
-        private bool isSingleton;
+        private bool _isSingleton;
 
         /// <summary>
         /// Deciding whether to make the class a DontDestroyOnLoad GameObject.
         /// </summary>
         [SerializeField]
-        private bool isDontDestroyOnLoad;
+        private bool _isDontDestroyOnLoad;
 
         /// <summary>
         /// Fade effect start color.
@@ -29,79 +27,71 @@ namespace qbot.UI
         [Space(5)]
         [Header("[Effect value]")]
         [SerializeField]
-        private Color beginFadeColor = Color.black;
+        private Color _beginFadeColor = Color.black;
 
         /// <summary>
         /// Fade effect Startup wait term.
         /// </summary>
         [SerializeField]
-        private float beginWaitTerm = 0.5f;
+        private float _beginWaitTerm = 0.5f;
 
         /// <summary>
         /// Fade effect's alpha-weighted delay term.
         /// </summary>
         [SerializeField]
-        private float fadeDelayTerm = 0.2f;
+        private float _fadeDelayTerm = 0.2f;
 
         /// <summary>
         /// The alpha weight added to each delay term of the fade effect.
         /// </summary>
         [SerializeField]
-        private float fadeAlphaWeight = 0.2f;
+        private float _fadeAlphaWeight = 0.2f;
 
         /// <summary>
         /// The image to which the fade effect will be applied.
         /// </summary>
         [SerializeField]
-        private Image fadeEffectImage;
-
-#endregion
-
-#region Properties
+        private Image _fadeEffectImage;
 
         public static FadeEffect Instance { get; private set; }
 
         public Color BeginFadeColor
         {
-            private get => beginFadeColor;
-            set => beginFadeColor = value;
+            private get => _beginFadeColor;
+            set => _beginFadeColor = value;
         }
 
         public float BeginWaitTerm
         {
-            private get => beginWaitTerm;
-            set => beginWaitTerm = value;
+            private get => _beginWaitTerm;
+            set => _beginWaitTerm = value;
         }
 
         public float FadeDelayTerm
         {
-            private get => fadeDelayTerm;
-            set => fadeDelayTerm = value;
+            private get => _fadeDelayTerm;
+            set => _fadeDelayTerm = value;
         }
 
         public float FadeAlphaWeight
         {
-            private get => fadeAlphaWeight;
-            set => fadeAlphaWeight = value;
+            private get => _fadeAlphaWeight;
+            set => _fadeAlphaWeight = value;
         }
 
         public Image FadeEffectImage
         {
-            private get => fadeEffectImage;
-            set => fadeEffectImage = value;
+            private get => _fadeEffectImage;
+            set => _fadeEffectImage = value;
         }
-
-#endregion
-
-#region Monobehaviour functions
 
         private void Awake()
         {
-            if (isSingleton)
+            if (_isSingleton)
             {
                 if (Instance == null)
                 {
-                    if (isDontDestroyOnLoad)
+                    if (_isDontDestroyOnLoad)
                     {
                         DontDestroyOnLoad(gameObject);
                     }
@@ -120,10 +110,6 @@ namespace qbot.UI
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
-#endregion
-
-#region Public functions
-
         /// <summary>
         /// Starts the fade in or out effect.
         /// </summary>
@@ -131,7 +117,7 @@ namespace qbot.UI
         /// <param name="callback">callback function to be called after the fade effect ends</param>
         public void StartFadeEffect(bool isFadeIn, Action callback = null)
         {
-            if (fadeEffectImage == null)
+            if (_fadeEffectImage == null)
             {
                 Debug.Log("fadeEffectImage is null.");
                 return;
@@ -139,8 +125,8 @@ namespace qbot.UI
 
             EnableFadeEffectObjects(true);
 
-            beginFadeColor.a = isFadeIn ? 1.0f : 0.0f;
-            fadeEffectImage.color = beginFadeColor;
+            _beginFadeColor.a = isFadeIn ? 1.0f : 0.0f;
+            _fadeEffectImage.color = _beginFadeColor;
 
             StartCoroutine(CoroutineFadeEffect(isFadeIn, callback));
         }
@@ -150,7 +136,7 @@ namespace qbot.UI
         /// </summary>
         public void DisableFadeEffectObject()
         {
-            if (fadeEffectImage == null)
+            if (_fadeEffectImage == null)
             {
                 Debug.Log("fadeEffectImage is null.");
                 return;
@@ -159,10 +145,6 @@ namespace qbot.UI
             EnableFadeEffectObjects(false);
         }
 
-#endregion
-
-#region Private functions
-
         private void OnSceneUnloaded(Scene scene)
         {
             DisableFadeEffectObject();
@@ -170,25 +152,25 @@ namespace qbot.UI
 
         private IEnumerator CoroutineFadeEffect(bool isFadeIn, Action callback)
         {
-            yield return new WaitForSeconds(beginWaitTerm);
+            yield return new WaitForSeconds(_beginWaitTerm);
 
-            var fadeColor = fadeEffectImage.color;
-            var fadeAlpha = beginFadeColor.a;
+            var fadeColor = _fadeEffectImage.color;
+            var fadeAlpha = _beginFadeColor.a;
             var fadeInOutAlphaWeight = isFadeIn ? -1.0f : 1.0f;
-            var fadeDelayTermWfs = new WaitForSeconds(fadeDelayTerm);
+            var fadeDelayTermWfs = new WaitForSeconds(_fadeDelayTerm);
 
             while (fadeAlpha is >= 0.0f and <= 1.0f)
             {
                 fadeColor.a = fadeAlpha;
-                fadeEffectImage.color = fadeColor;
+                _fadeEffectImage.color = fadeColor;
 
-                fadeAlpha += fadeAlphaWeight * fadeInOutAlphaWeight;
+                fadeAlpha += _fadeAlphaWeight * fadeInOutAlphaWeight;
 
                 yield return fadeDelayTermWfs;
             }
 
             fadeColor.a = fadeInOutAlphaWeight > 0 ? 1.0f : 0.0f;
-            fadeEffectImage.color = fadeColor;
+            _fadeEffectImage.color = fadeColor;
 
             callback?.Invoke();
         }
@@ -197,10 +179,8 @@ namespace qbot.UI
         {
             gameObject.SetActive(enable);
 
-            fadeEffectImage.gameObject.SetActive(enable);
-            fadeEffectImage.enabled = enable;
+            _fadeEffectImage.gameObject.SetActive(enable);
+            _fadeEffectImage.enabled = enable;
         }
-
-#endregion
     }
 }

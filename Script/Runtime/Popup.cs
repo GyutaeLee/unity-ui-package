@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
 namespace qbot.UI
 {
@@ -12,48 +13,52 @@ namespace qbot.UI
         /// <summary>
         /// Popup object.
         /// </summary>
+        [FormerlySerializedAs("popupObject")]
         [SerializeField]
-        private GameObject popupObject;
+        private GameObject _popupObject;
         public GameObject PopupObject
         {
-            private get => popupObject;
-            set => popupObject = value;
+            private get => _popupObject;
+            set => _popupObject = value;
         }
 
         /// <summary>
         /// Popup button.
         /// </summary>
+        [FormerlySerializedAs("popupButton")]
         [SerializeField]
-        private Button popupButton;
+        private Button _popupButton;
         public Button PopupButton
         {
-            private get => popupButton;
-            set => popupButton = value;
+            private get => _popupButton;
+            set => _popupButton = value;
         }
 
         /// <summary>
         /// Popup main description.
         /// </summary>
+        [FormerlySerializedAs("popupDescriptionText")]
         [SerializeField]
-        private TextMeshProUGUI popupDescriptionText;
+        private TextMeshProUGUI _popupDescriptionText;
         public TextMeshProUGUI PopupDescriptionText
         {
-            private get => popupDescriptionText;
-            set => popupDescriptionText = value;
+            private get => _popupDescriptionText;
+            set => _popupDescriptionText = value;
         }
 
         /// <summary>
         /// Button main description.
         /// </summary>
+        [FormerlySerializedAs("buttonDescriptionText")]
         [SerializeField]
-        private TextMeshProUGUI buttonDescriptionText;
+        private TextMeshProUGUI _buttonDescriptionText;
         public TextMeshProUGUI ButtonDescriptionText
         {
-            private get => buttonDescriptionText;
-            set => buttonDescriptionText = value;
+            private get => _buttonDescriptionText;
+            set => _buttonDescriptionText = value;
         }
 
-        private bool AllPopupClosed => popupObject.activeSelf == false;
+        private bool AllPopupClosed => _popupObject.activeSelf == false;
 
 #endregion
 
@@ -67,23 +72,23 @@ namespace qbot.UI
         /// <param name="buttonUnityAction">The action that will be called when the button is pressed</param>
         public void OpenDefaultPopup(string popUpDescription, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
         {
-            if (popupObject == null || popupButton == null || PopupDescriptionText == null)
+            if (_popupObject == null || _popupButton == null || PopupDescriptionText == null)
             {
                 Debug.Log("Something is null.");
                 return;
             }
 
-            popupObject.SetActive(true);
+            _popupObject.SetActive(true);
 
-            popupDescriptionText.text = popUpDescription;
-            buttonDescriptionText.text = buttonDescription;
+            _popupDescriptionText.text = popUpDescription;
+            _buttonDescriptionText.text = buttonDescription;
 
             if (buttonUnityAction != null)
             {
-                popupButton.onClick.AddListener(buttonUnityAction);
+                _popupButton.onClick.AddListener(buttonUnityAction);
             }
 
-            popupButton.onClick.AddListener(CloseDefaultPopup);
+            _popupButton.onClick.AddListener(CloseDefaultPopup);
         }
 
         /// <summary>
@@ -91,14 +96,14 @@ namespace qbot.UI
         /// </summary>
         public void CloseDefaultPopup()
         {
-            if (popupObject == null || popupButton == null)
+            if (_popupObject == null || _popupButton == null)
             {
                 Debug.Log("Something is null.");
                 return;
             }
 
-            popupObject.SetActive(false);
-            popupButton.onClick.RemoveAllListeners();
+            _popupObject.SetActive(false);
+            _popupButton.onClick.RemoveAllListeners();
         }
 
 #endregion

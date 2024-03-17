@@ -8,13 +8,7 @@ namespace qbot.UI
     /// </summary>
     public class SafeAreaReactor : MonoBehaviour
     {
-#region Fields
-
-        [SerializeField] private RectTransform rectTransform;
-
-#endregion
-
-#region Monobehaviour functions
+        [SerializeField] private RectTransform _rectTransform;
 
         private void Start()
         {
@@ -22,37 +16,31 @@ namespace qbot.UI
             ApplySafeAreaPosition();
         }
 
-#endregion
-
-#region Private functions
-
         private void PrepareBaseObjects()
         {
-            if (rectTransform == null)
+            if (_rectTransform == null)
             {
-                rectTransform = gameObject.GetComponent<RectTransform>();
+                _rectTransform = gameObject.GetComponent<RectTransform>();
             }
         }
 
         private void ApplySafeAreaPosition()
         {
-            if (rectTransform == null)
+            if (_rectTransform == null)
                 return;
 
             var safeArea = Screen.safeArea;
             var anchorMin = safeArea.position;
             var anchorMax = safeArea.position + safeArea.size;
 
-            anchorMin.x = rectTransform.anchorMin.x;
-            anchorMax.x = rectTransform.anchorMax.x;
+            anchorMin.x = _rectTransform.anchorMin.x;
+            anchorMax.x = _rectTransform.anchorMax.x;
 
             anchorMin.y /= Screen.height;
             anchorMax.y /= Screen.height;
 
-            rectTransform.anchorMin = anchorMin;
-            rectTransform.anchorMax = anchorMax;
+            _rectTransform.anchorMin = anchorMin;
+            _rectTransform.anchorMax = anchorMax;
         }
-
-#endregion
     }
 }
