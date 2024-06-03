@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,6 +30,9 @@ namespace qbot.UI
         private readonly object _lockObjectIncreaseProgressKey = new();
         private readonly object _lockObjectDecreaseProgressKey = new();
 
+        public event Action OnOpened;
+        public event Action OnClosed;
+
         /// <summary>
         /// Open the progress object.
         /// The progressKey must be the same key value when closing the progress object.
@@ -51,6 +55,7 @@ namespace qbot.UI
                 return;
 
             _progressObject.SetActive(true);
+            OnOpened?.Invoke();
         }
 
         /// <summary>
@@ -74,10 +79,11 @@ namespace qbot.UI
 
             DecreaseProgressKey(progressKey);
 
-            if (ProgressKeyDictionary.Count == 0)
-            {
-                _progressObject.SetActive(false);
-            }
+            if (ProgressKeyDictionary.Count != 0)
+                return;
+            
+            _progressObject.SetActive(false);
+            OnClosed?.Invoke();
         }
 
         private void IncreaseProgressKey(string progressKey)
