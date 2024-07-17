@@ -87,21 +87,21 @@ namespace qbot.UI
 
         private void Awake()
         {
-            if (_isSingleton)
+            if (_isSingleton == false) 
+                return;
+            
+            if (Instance == null)
             {
-                if (Instance == null)
+                if (_isDontDestroyOnLoad)
                 {
-                    if (_isDontDestroyOnLoad)
-                    {
-                        DontDestroyOnLoad(gameObject);
-                    }
+                    DontDestroyOnLoad(gameObject);
+                }
 
-                    Instance = this;
-                }
-                else
-                {
-                    Destroy(this);
-                }
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
             }
         }
 
