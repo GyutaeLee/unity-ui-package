@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +10,10 @@ namespace qbot.UI
         [SerializeField] private Image _targetImage;
         [SerializeField] private Sprite[] _animationSprites;
         [SerializeField] private float _animationTerm = 0.1f;
-        
-        private void Start()
+
+        private IEnumerator _animationEnumerator;
+
+        private void OnEnable()
         {
             if (_targetImage == null || _animationSprites.Length == 0)
             {
@@ -18,8 +21,14 @@ namespace qbot.UI
                 Destroy(this);
                 return;
             }
-            
-            StartCoroutine(StartUIImageAnimation());
+
+            _animationEnumerator ??= StartUIImageAnimation();
+            StartCoroutine(_animationEnumerator);
+        }
+
+        private void OnDisable()
+        {
+            StopCoroutine(_animationEnumerator);
         }
 
         private IEnumerator StartUIImageAnimation()
