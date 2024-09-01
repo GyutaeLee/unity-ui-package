@@ -72,12 +72,7 @@ namespace qbot.UI
             _popupDescriptionText.text = popUpDescription;
             _buttonDescriptionText.text = buttonDescription;
 
-            if (buttonUnityAction != null)
-            {
-                _popupButton.onClick.AddListener(buttonUnityAction);
-            }
-
-            _popupButton.onClick.AddListener(CloseDefaultPopup);
+            _popupButton.onClick.AddListener(buttonUnityAction ?? CloseDefaultPopup);
         }
 
         /// <summary>
