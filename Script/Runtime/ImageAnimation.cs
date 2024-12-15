@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace qbot.UI
 {
-    public class UIImageAnimation : MonoBehaviour
+    public class ImageAnimation : MonoBehaviour
     {
         [SerializeField] private Image _targetImage;
         [SerializeField] private Sprite[] _animationSprites;
