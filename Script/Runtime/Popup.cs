@@ -14,8 +14,8 @@ namespace qbot.UI
         private GameObject _popupObject;
         public GameObject PopupObject
         {
-            private get => _popupObject;
-            set => _popupObject = value;
+            get => _popupObject;
+            private set => _popupObject = value;
         }
 
         /// <summary>
@@ -25,8 +25,8 @@ namespace qbot.UI
         private Button _popupButton;
         public Button PopupButton
         {
-            private get => _popupButton;
-            set => _popupButton = value;
+            get => _popupButton;
+            private set => _popupButton = value;
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace qbot.UI
         private TextMeshProUGUI _popupDescriptionText;
         public TextMeshProUGUI PopupDescriptionText
         {
-            private get => _popupDescriptionText;
-            set => _popupDescriptionText = value;
+            get => _popupDescriptionText;
+            private set => _popupDescriptionText = value;
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace qbot.UI
         private TextMeshProUGUI _buttonDescriptionText;
         public TextMeshProUGUI ButtonDescriptionText
         {
-            private get => _buttonDescriptionText;
-            set => _buttonDescriptionText = value;
+            get => _buttonDescriptionText;
+            private set => _buttonDescriptionText = value;
         }
 
         private bool AllPopupClosed => _popupObject.activeSelf == false;
