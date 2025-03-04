@@ -80,6 +80,14 @@ namespace qbot.UI
             DecreaseProgressKey(progressKey);
 
             if (ProgressKeyDictionary.Count != 0)
+            {
+                Debug.Log($"{nameof(Progress)}.{nameof(Close)}: ({progressKey}) {string.Join(", ", ProgressKeyDictionary.Keys)} / {string.Join(", ", ProgressKeyDictionary.Values)}");
+                return;
+            }
+
+            _progressObject.SetActive(false);
+            OnClosed?.Invoke();
+        }
 
         public void CloseAll()
         {
