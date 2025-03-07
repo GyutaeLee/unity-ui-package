@@ -49,6 +49,8 @@ namespace qbot.UI
                 return;
             }
 
+            Debug.Log($"{nameof(Progress)}.{nameof(Open)}: ({progressKey})");
+            
             IncreaseProgressKey(progressKey);
 
             if (_progressObject.activeSelf)
@@ -85,6 +87,7 @@ namespace qbot.UI
                 return;
             }
 
+            Debug.Log($"{nameof(Progress)}.{nameof(Close)}: ({progressKey}) Completed.");
             _progressObject.SetActive(false);
             OnClosed?.Invoke();
         }
