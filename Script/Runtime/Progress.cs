@@ -83,7 +83,9 @@ namespace qbot.UI
 
             if (ProgressKeyDictionary.Count != 0)
             {
-                Debug.Log($"{nameof(Progress)}.{nameof(Close)}: ({progressKey}) {string.Join(", ", ProgressKeyDictionary.Keys)} / {string.Join(", ", ProgressKeyDictionary.Values)}");
+                Debug.Log($"{nameof(Progress)}.{nameof(Close)}: ({progressKey})\n" +
+                          $"Keys: {string.Join(", ", ProgressKeyDictionary.Keys)}\n" +
+                          $"Values: {string.Join(", ", ProgressKeyDictionary.Values)}");
                 return;
             }
 
