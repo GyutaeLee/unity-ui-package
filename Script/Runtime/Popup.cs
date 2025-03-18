@@ -14,7 +14,7 @@ namespace qbot.UI
 
         private readonly HashSet<GameObject> _instantiatedPopupObjects = new();
 
-        public void InstantiateDefaultPopup(string description, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
+        public GameObject InstantiateDefaultPopup(string description, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
         {
             var popupObject = Instantiate(_popupObject, _popupCanvas.transform, true);
             _instantiatedPopupObjects.Add(popupObject);
@@ -29,6 +29,8 @@ namespace qbot.UI
 
             var buttonDescriptionText = buttonObjectTransform.Find("popupButtonText").GetComponent<TextMeshProUGUI>();
             buttonDescriptionText.text = buttonDescription;
+
+            return popupObject;
         }
 
         public void CloseAllInstantiatedPopups()
