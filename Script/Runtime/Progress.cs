@@ -48,8 +48,6 @@ namespace qbot.UI
                 Debug.Log("progressObject is null.");
                 return;
             }
-
-            Debug.Log($"{nameof(Progress)}.{nameof(Open)}: ({progressKey})");
             
             IncreaseProgressKey(progressKey);
 
@@ -82,14 +80,8 @@ namespace qbot.UI
             DecreaseProgressKey(progressKey);
 
             if (ProgressKeyDictionary.Count != 0)
-            {
-                Debug.Log($"{nameof(Progress)}.{nameof(Close)}: ({progressKey})\n" +
-                          $"Keys: {string.Join(", ", ProgressKeyDictionary.Keys)}\n" +
-                          $"Values: {string.Join(", ", ProgressKeyDictionary.Values)}");
                 return;
-            }
-
-            Debug.Log($"{nameof(Progress)}.{nameof(Close)}: ({progressKey}) Completed.");
+            
             _progressObject.SetActive(false);
             OnClosed?.Invoke();
         }
