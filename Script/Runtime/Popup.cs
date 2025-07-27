@@ -9,15 +9,15 @@ namespace qbot.UI
 {
     public class Popup : MonoBehaviour
     {
-        [SerializeField] private Canvas _popupCanvas;
+        [SerializeField] protected Canvas _popupCanvas;
         [SerializeField] private GameObject _popupObject;
 
-        private readonly HashSet<GameObject> _instantiatedPopupObjects = new();
+        protected readonly HashSet<GameObject> InstantiatedPopupObjects = new();
 
         public GameObject InstantiateDefaultPopup(string description, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
         {
             var popupObject = Instantiate(_popupObject, _popupCanvas.transform, true);
-            _instantiatedPopupObjects.Add(popupObject);
+            InstantiatedPopupObjects.Add(popupObject);
             popupObject.SetActive(true);
 
             var descriptionText = popupObject.transform.Find("popupDescriptionText").GetComponent<TextMeshProUGUI>();
@@ -35,12 +35,12 @@ namespace qbot.UI
 
         public void CloseAllInstantiatedPopups()
         {
-            foreach (var go in _instantiatedPopupObjects.Where(go => go != null))
+            foreach (var go in InstantiatedPopupObjects.Where(go => go != null))
             {
                 Destroy(go);
             }
 
-            _instantiatedPopupObjects.Clear();
+            InstantiatedPopupObjects.Clear();
         }
     }
 }
