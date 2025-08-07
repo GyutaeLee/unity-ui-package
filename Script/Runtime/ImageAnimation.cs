@@ -23,16 +23,13 @@ namespace qbot.UI
 
         private void OnDisable()
         {
-            if (_runningCoroutine != null)
-            {
-                StopCoroutine(_runningCoroutine);
-                _runningCoroutine = null;
-            }
+            StopAnimation();
         }
 
         public void ChangeAnimationSprites(Sprite[] sprites)
         {
             _animationSprites = sprites;
+            _targetImage.sprite = _animationSprites[0];
         }
 
         public void StartAnimation()
@@ -41,6 +38,15 @@ namespace qbot.UI
                 return;
             
             _runningCoroutine = StartCoroutine(CoroutineStartAnimation());
+        }
+
+        public void StopAnimation()
+        {
+            if (_runningCoroutine == null) 
+                return;
+            
+            StopCoroutine(_runningCoroutine);
+            _runningCoroutine = null;
         }
 
         private IEnumerator CoroutineStartAnimation()
