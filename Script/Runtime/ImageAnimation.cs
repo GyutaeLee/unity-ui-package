@@ -6,6 +6,8 @@ namespace qbot.UI
 {
     public class ImageAnimation : MonoBehaviour
     {
+        [SerializeField] private bool _isAutoStart;
+        
         [SerializeField] private Image _targetImage;
         [SerializeField] private Sprite[] _animationSprites;
         [SerializeField] private float _animationTerm = 0.1f;
@@ -15,10 +17,13 @@ namespace qbot.UI
 
         private void OnEnable()
         {
-            if (_targetImage == null || _animationSprites.Length == 0 || _runningCoroutine != null)
-                return;
+            if (_isAutoStart)
+            {
+                if (_targetImage == null || _animationSprites.Length == 0 || _runningCoroutine != null)
+                    return;
 
-            _runningCoroutine = StartCoroutine(CoroutineStartAnimation());
+                _runningCoroutine = StartCoroutine(CoroutineStartAnimation());
+            }
         }
 
         private void OnDisable()
