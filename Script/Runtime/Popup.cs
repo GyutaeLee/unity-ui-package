@@ -9,26 +9,38 @@ namespace qbot.UI
 {
     public class Popup : MonoBehaviour
     {
-        [SerializeField] protected Canvas _popupCanvas;
-        [SerializeField] private GameObject _popupObject;
+        [SerializeField] protected Canvas PopupCanvas;
+        [SerializeField] protected GameObject PopupPrefab;
 
         protected readonly HashSet<GameObject> InstantiatedPopupObjects = new();
 
         public GameObject InstantiateDefaultPopup(string description, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
         {
-            var popupObject = Instantiate(_popupObject, _popupCanvas.transform, true);
+            var popupObject = Instantiate(PopupPrefab, PopupCanvas.transform, true);
             InstantiatedPopupObjects.Add(popupObject);
             popupObject.SetActive(true);
 
             var descriptionText = popupObject.transform.Find("popupDescriptionText").GetComponent<TextMeshProUGUI>();
-            descriptionText.text = description;
+            if (descriptionText != null)
+            {
+                descriptionText.text = description;
+            }
 
             var buttonObjectTransform = popupObject.transform.Find("popupButton");
-            var button = buttonObjectTransform.GetComponent<Button>();
-            button.onClick.AddListener(buttonUnityAction ?? (() => { Destroy(popupObject); }));
+            if (buttonObjectTransform != null)
+            {
+                var button = buttonObjectTransform.GetComponent<Button>();
+                if (button != null)
+                {
+                    button.onClick.AddListener(buttonUnityAction ?? (() => { Destroy(popupObject); }));
+                }
+            }
 
             var buttonDescriptionText = buttonObjectTransform.Find("popupButtonText").GetComponent<TextMeshProUGUI>();
-            buttonDescriptionText.text = buttonDescription;
+            if (buttonDescriptionText != null)
+            {
+                buttonDescriptionText.text = buttonDescription;
+            }
 
             return popupObject;
         }
