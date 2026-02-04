@@ -14,7 +14,7 @@ namespace qbot.UI
 
         protected readonly HashSet<GameObject> InstantiatedPopupObjects = new();
 
-        public GameObject InstantiateDefaultPopup(string description, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
+        public virtual GameObject InstantiateDefaultPopup(string description, string buttonDescription = "OK", UnityAction buttonUnityAction = null)
         {
             var popupObject = Instantiate(PopupPrefab, PopupCanvas.transform, true);
             InstantiatedPopupObjects.Add(popupObject);
